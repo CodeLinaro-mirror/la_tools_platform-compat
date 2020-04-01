@@ -23,10 +23,10 @@ java_library {
         "EnabledAfter.java",
         "LoggingOnly.java",
     ],
-    // Allow core_current to use the annotations.
-    sdk_version: "current",
+    sdk_version: "core_current",
 }
 
+// Don't forget to depend on exported_plugins, if using sources directly
 filegroup {
     name: "app-compat-annotations-source",
     srcs: [
@@ -45,4 +45,5 @@ java_library {
         "UnsupportedAppUsage.java",
     ],
     sdk_version: "core_current",
+    exported_plugins: ["unsupportedappusage-annotation-processor"],
 }
