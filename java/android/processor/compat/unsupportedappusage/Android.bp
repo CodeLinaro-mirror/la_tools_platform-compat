@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 java_library_host {
     name: "unsupportedappusage-annotation-processor-lib",
     srcs: [
@@ -22,6 +21,7 @@ java_library_host {
     ],
     static_libs: [
         "guava",
+        "//tools/platform-compat/java/android/processor/compat:compat-processor",
     ],
     openjdk9: {
         javacflags: [
@@ -48,4 +48,9 @@ java_plugin {
     ],
 
     use_tools_jar: true,
+
+    visibility: [
+        "//libcore:__pkg__",
+        "//tools/platform-compat/java/android/compat/annotation:__subpackages__",
+    ],
 }
