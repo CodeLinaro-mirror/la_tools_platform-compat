@@ -22,7 +22,6 @@ import static javax.tools.Diagnostic.Kind.ERROR;
 import static javax.tools.StandardLocation.CLASS_OUTPUT;
 
 import android.processor.compat.SingleAnnotationProcessor;
-import android.processor.compat.SourcePosition;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Table;
@@ -71,6 +70,7 @@ public class ChangeIdProcessor extends SingleAnnotationProcessor {
     private static final String ENABLED_AFTER_CLASS_NAME = "android.compat.annotation.EnabledAfter";
     private static final String ENABLED_SINCE_CLASS_NAME = "android.compat.annotation.EnabledSince";
     private static final String LOGGING_CLASS_NAME = "android.compat.annotation.LoggingOnly";
+    private static final String NO_LOGGING_CLASS_NAME = "android.compat.annotation.NoLogging";
     private static final String TARGET_SDK_VERSION = "targetSdkVersion";
     private static final String OVERRIDABLE_CLASS_NAME = "android.compat.annotation.Overridable";
 
@@ -189,6 +189,9 @@ public class ChangeIdProcessor extends SingleAnnotationProcessor {
                 case LOGGING_CLASS_NAME:
                     builder.loggingOnly();
                     break;
+                case NO_LOGGING_CLASS_NAME:
+                    builder.noLogging();
+                    break;
                 case ENABLED_AFTER_CLASS_NAME:
                     builder.enabledAfter((Integer)(Objects.requireNonNull(sdkValue).getValue()));
                     break;
@@ -208,13 +211,7 @@ public class ChangeIdProcessor extends SingleAnnotationProcessor {
                 builder.javaClass(enclosingElementName)
                         .javaPackage(packageName)
                         .qualifiedClass(packageName + "." + enclosingElementName)
-                        .sourcePosition(getLineNumber(element, changeId))
                         .build());
-    }
-
-    private String getLineNumber(Element element, AnnotationMirror mirror) {
-        SourcePosition position = Objects.requireNonNull(getSourcePosition(element, mirror));
-        return String.format("%s:%d", position.getFilename(), position.getStartLineNumber());
     }
 
     private Change verifyChange(Element element, Change change) {

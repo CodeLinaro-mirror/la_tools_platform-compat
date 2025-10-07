@@ -24,6 +24,7 @@ final class Change {
     final String name;
     final boolean disabled;
     final boolean loggingOnly;
+    final boolean noLogging;
     final Integer enabledAfter;
     final Integer enabledSince;
     final String description;
@@ -40,19 +41,25 @@ final class Change {
      * Fully qualified class name (including the package) that the change is defined in.
      */
     final String qualifiedClass;
-    /**
-     * Source position, in the form path/to/File.java:line
-     */
-    final String sourcePosition;
 
-     Change(Long id, String name, boolean disabled, boolean loggingOnly, Integer enabledAfter,
-             Integer enabledSince, String description, boolean overridable, String javaPackage,
-             String className,
-             String qualifiedClass, String sourcePosition) {
+    Change(
+            Long id,
+            String name,
+            boolean disabled,
+            boolean loggingOnly,
+            boolean noLogging,
+            Integer enabledAfter,
+            Integer enabledSince,
+            String description,
+            boolean overridable,
+            String javaPackage,
+            String className,
+            String qualifiedClass) {
         this.id = id;
         this.name = name;
         this.disabled = disabled;
         this.loggingOnly = loggingOnly;
+        this.noLogging = noLogging;
         this.enabledAfter = enabledAfter;
         this.enabledSince = enabledSince;
         this.description = description;
@@ -60,7 +67,6 @@ final class Change {
         this.javaPackage = javaPackage;
         this.className = className;
         this.qualifiedClass = qualifiedClass;
-        this.sourcePosition = sourcePosition;
     }
 
     public static class Builder {
@@ -68,6 +74,7 @@ final class Change {
         String name;
         boolean disabled;
         boolean loggingOnly;
+        boolean noLogging;
         Integer enabledAfter;
         Integer enabledSince;
         String description;
@@ -75,7 +82,6 @@ final class Change {
         String javaPackage;
         String javaClass;
         String qualifiedClass;
-        String sourcePosition;
 
         Builder() {
         }
@@ -97,6 +103,11 @@ final class Change {
 
         public Builder loggingOnly() {
             this.loggingOnly = true;
+            return this;
+        }
+
+        public Builder noLogging() {
+            this.noLogging = true;
             return this;
         }
 
@@ -135,14 +146,20 @@ final class Change {
             return this;
         }
 
-        public Builder sourcePosition(String sourcePosition) {
-            this.sourcePosition = sourcePosition;
-            return this;
-        }
-
         public Change build() {
-            return new Change(id, name, disabled, loggingOnly, enabledAfter, enabledSince,
-                    description, overridable, javaPackage, javaClass, qualifiedClass, sourcePosition);
+            return new Change(
+                    id,
+                    name,
+                    disabled,
+                    loggingOnly,
+                    noLogging,
+                    enabledAfter,
+                    enabledSince,
+                    description,
+                    overridable,
+                    javaPackage,
+                    javaClass,
+                    qualifiedClass);
         }
     }
 }

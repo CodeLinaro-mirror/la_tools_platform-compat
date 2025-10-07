@@ -64,13 +64,13 @@ final class XmlWriter {
     private static final String XML_ID_ATTR = "id";
     private static final String XML_DISABLED_ATTR = "disabled";
     private static final String XML_LOGGING_ATTR = "loggingOnly";
+    private static final String XML_NO_LOGGING_ATTR = "noLogging";
     private static final String XML_ENABLED_AFTER_ATTR = "enableAfterTargetSdk";
     private static final String XML_ENABLED_SINCE_ATTR = "enableSinceTargetSdk";
     private static final String XML_DESCRIPTION_ATTR = "description";
     private static final String XML_OVERRIDABLE_ATTR = "overridable";
     private static final String XML_METADATA_ELEMENT = "meta-data";
     private static final String XML_DEFINED_IN = "definedIn";
-    private static final String XML_SOURCE_POSITION = "sourcePosition";
 
     private Document mDocument;
     private Element mRoot;
@@ -91,6 +91,9 @@ final class XmlWriter {
         if (change.loggingOnly) {
             newElement.setAttribute(XML_LOGGING_ATTR, "true");
         }
+        if (change.noLogging) {
+            newElement.setAttribute(XML_NO_LOGGING_ATTR, "true");
+        }
         if (change.enabledAfter != null) {
             newElement.setAttribute(XML_ENABLED_AFTER_ATTR, change.enabledAfter.toString());
         }
@@ -106,9 +109,6 @@ final class XmlWriter {
         Element metaData = mDocument.createElement(XML_METADATA_ELEMENT);
         if (change.qualifiedClass != null) {
             metaData.setAttribute(XML_DEFINED_IN, change.qualifiedClass);
-        }
-        if (change.sourcePosition != null) {
-            metaData.setAttribute(XML_SOURCE_POSITION, change.sourcePosition);
         }
         if (metaData.hasAttributes()) {
             newElement.appendChild(metaData);
